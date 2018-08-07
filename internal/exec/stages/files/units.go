@@ -18,6 +18,7 @@ import (
 	"path/filepath"
 
 	"github.com/coreos/ignition/internal/config/types"
+	"github.com/coreos/ignition/internal/distro"
 	"github.com/coreos/ignition/internal/exec/util"
 )
 
@@ -83,7 +84,7 @@ func (s *stage) createUnits(config types.Config) error {
 func (s *stage) writeSystemdUnit(unit types.Unit, runtime bool) error {
 	// use a different DestDir if it's runtime so it affects our /run
 	u := s.Util
-	if runtime {
+	if runtime && !distro.BlackboxTesting() {
 		u.DestDir = "/"
 	}
 
